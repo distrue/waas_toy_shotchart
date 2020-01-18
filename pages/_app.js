@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'next/app';
 import Head from 'next/head';
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 
 const Layout = ({ Component }) => {

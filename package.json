@@ -1,25 +1,34 @@
 {
-	"name": "basket",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"dev": "next -p 3000",
-		"build": "next build",
-		"start": "next start -p 80"
-	},
-	"dependencies": {
-		"next": "^9.1.3",
-		"react": "^16.11.0",
-		"react-dom": "^16.11.0",
-		"styled-components": "^4.4.1"
-	},
-	"devDependencies": {
-		"@babel/plugin-proposal-class-properties": "^7.5.5",
-		"@babel/plugin-proposal-decorators": "^7.6.0",
-		"@babel/plugin-transform-runtime": "^7.6.2",
-		"babel-plugin-styled-components": "^1.10.6"
-	},
-	"author": "",
-	"license": "ISC"
+  "name": "basket",
+  "version": "1.0.0",
+  "description": "<p align=\"center\"> \r <h1 align=\"center\">WaaS Toy PJ #1: My Shot Chart</h1>\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next -p 3000",
+    "build": "next build",
+    "start": "next start -p 80"
+  },
+  "dependencies": {
+    "next": "^9.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "styled-components": "^4.4.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "babel-plugin-styled-components": "^1.10.6"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dankimh/waas_toy_shotchart.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/dankimh/waas_toy_shotchart/issues"
+  },
+  "homepage": "https://github.com/dankimh/waas_toy_shotchart#readme"
 }
