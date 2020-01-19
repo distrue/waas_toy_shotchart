@@ -8,25 +8,25 @@ const Index = (props) => {
     return (
         <ButtonContainer>
             <Button>
-            <div onClick={()=>{props.updateMade(1)}}>
+            <div className="plusButton" onClick={()=>{props.updateMade(1)}}>
             +
             </div>
-            <div height="30%">
+            <div className="text">
                 {newMade[index]}
             </div>
-            <div onClick={()=>{props.updateMade(-1)}}>
+            <div className="minusButton" onClick={()=>{props.updateMade(-1)}}>
             -
             </div>
             <Title>MADE</Title>
             </Button>
             <Button>
-            <div onClick={()=>{props.updateFail(1)}}>
+            <div className="plusButton" onClick={()=>{props.updateFail(1)}}>
             +
             </div>
-            <div>
+            <div className="text">
                 {newFail[index]}
             </div>
-            <div onClick={()=>{props.updateFail(-1)}}>
+            <div className="minusButton" onClick={()=>{props.updateFail(-1)}}>
             -
             </div>
             <Title>FAIL</Title>
@@ -51,19 +51,41 @@ const Button=styled.div`
     border-image: initial;
     text-align:center;
     font-size : 30px;
+    .plusButton{
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        height: 35%;
+    }
+    .minusButton{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 35%;
+    }
+    .text{
+        position: absolute;
+        top: 35%;
+        width: 100%;
+        height: 30%;
+        text-align: center;
+        font-size: 30px;
+        cursor: text;
+    }
 `
 const Title=styled.div`
+    font-size:18px;
     position: relative;
-    top: 150%;
+    top: 100%;
     width: 100%;
     text-align: center;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
     text-indent: 2.5px;
 `
 const ButtonContainer = styled.div`
     position: relative;
     width: calc(100% - 40px);
-    height: 20%;
+    height: 20vh;
     display: flex;
     margin: 30px 20px 20px;
 `;

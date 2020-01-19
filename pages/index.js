@@ -18,10 +18,13 @@ const Index = () => {
     const updateMade=(value)=>{
         const newRate=[...rate];
         const newMade=[...made];
+
         if(value+newMade[index]<0) console.log('0미만으로 입력할 수 없습니다.')
         else newMade[index]=newMade[index]+value;
+
+        if(newMade[index]+fail[index]===0) newRate[index]=0;
+        else newRate[index]=newMade[index]/(newMade[index]+fail[index]);
         setMade(newMade);
-        newRate[index]=made[index]/(made[index]+fail[index]);
         setRate(newRate);
     }
 
@@ -31,7 +34,8 @@ const Index = () => {
         if(value+newFail[index]<0) console.log('0미만으로 입력할 수 없습니다.')
         else newFail[index]=newFail[index]+value;
         setFail(newFail);
-        newRate[index]=made[index]/(made[index]+fail[index]);
+        if(made[index]+newFail[index]===0) newRate[index]=0;
+        else newRate[index]=made[index]/(made[index]+newFail[index]);
         setRate(newRate);
     }
     
@@ -43,7 +47,7 @@ const Index = () => {
                 <div className="text">My Shot Chart</div>
             </HeaderStyle>
             <Court updateSpot={updateSpot} spot={spotname} updateIndex={updateIndex} rate={rate} ></Court>
-            <Piechart index={index}  made={made} fail={fail} ></Piechart>
+            <Piechart index={index}  made={made} fail={fail} rate={rate} ></Piechart>
             <CountButton index={index} made={made} fail={fail} updateMade={updateMade} updateFail={updateFail} ></CountButton>            
             
         </Background>
