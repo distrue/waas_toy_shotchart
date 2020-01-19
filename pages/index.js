@@ -1,67 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CountButton, Court, Piechart } from '../components';
 
 const Index = () => {
     const [index, setIndex] = useState(0);
-    //const [positionList, setPositionList] = useState(localStorage.getItem('positionList'));
-    const [positionList, setPositionList] = useState([{
-        name: 'LeftConner',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'LeftShortConner',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'PaintZone',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'RightShortConner',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'RightConner',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'LeftWing',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'Top',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'RightWing',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'LeftElbow',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'Key',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }, {
-        name: 'RightElbow',
-        made: 0,
-        fail: 0,
-        ratio: 0
-    }]);
-    
+    const [positionList, setPositionList] = useState(initList);
+    useEffect(() => {
+        const localList = JSON.parse(localStorage.getItem('positionList'));
+        if(localList!==null) setPositionList([...localList]);
+    },[]);
+    useEffect(() => {
+        localStorage.setItem('positionList', JSON.stringify(positionList));
+    });
     const selectPosition = (index) => {
         setIndex(index);
     }
@@ -73,7 +23,6 @@ const Index = () => {
         else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
         else newPositionList[index].ratio=1;
         setPositionList([...newPositionList]);
-        //localStorage('positionList', newPositionList);
     }
     const onFailChange = (changed) => {
         let newPositionList = positionList;
@@ -96,7 +45,6 @@ const Index = () => {
         </Background>
     )
 }
-//TODO positionList local storige export
 export default Index;
 
 const HeaderStyle = styled.div`
@@ -121,7 +69,62 @@ const HeaderStyle = styled.div`
         text-align: center;
         color: #ffffff;
     }
-    
 `
 const Background = styled.div`
 `
+const initList = [{
+    name: 'LeftConner',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'LeftShortConner',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'PaintZone',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'RightShortConner',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'RightConner',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'LeftWing',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'Top',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'RightWing',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'LeftElbow',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'Key',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}, {
+    name: 'RightElbow',
+    made: 0,
+    fail: 0,
+    ratio: 0
+}];
