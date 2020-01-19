@@ -12,6 +12,7 @@ const Index = (props) => {
                 <button className="plus" onClick={()=>props.up('made',props.index)}>+</button>
                 <div className="value">{nowScore[props.index].made}</div>
                 <button className="minus" onClick={(nowScore[props.index].made)===0?'':()=>props.down('made',props.index)}>-</button>
+                <div>made</div>
             </div>
             <div className="nosee"/>
             <div className="nosee"/>
@@ -19,6 +20,7 @@ const Index = (props) => {
                 <button className="plus" onClick={()=>props.up('fail',props.index)}>+</button>
                 <div className="value">{nowScore[props.index].fail}</div>
                 <button className="minus" onClick={(nowScore[props.index].fail===0)?'':()=>props.down('fail',props.index)}>-</button>
+                <div>fail</div>
             </div>
             <div className="nosee"/>
         </ButtonContainer>

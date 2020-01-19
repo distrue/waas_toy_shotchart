@@ -2,45 +2,42 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { CountButton, Piechart, Court } from '../components';
 
+let localImsiScore=[{}];
 const Index = () => {
+    const [time,changeTime]=useState(0);
     const [nowIndex,changeIndex]=useState(0);
     const [score,changeScore]=useState([{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0}]);
-    
-    const initialState=()=>{
-        if(localStorage.length()===0)return;
-        else{
-            for(let i=0;i<11;i++){
-                //changeScore(window.localStorage.getItem(,))
-            }
-            useEffect(()=>{
-                for(let i=0;i<11;i++){
-                    window.localStorage.setItem(i,JSON.stringify(score[i]));
-                }
-            });
-        }
-    }
-
-    /*for(let i=0;i<11;i++){
-        localStorage.setItem(i,JSON.stringify(score[i]));
-    }*/
-
-    /*let check=0;
-    if(score[nowIndex].made<0){
-        console.log('you can\'t go under zero(made)');
-        check=1;
-    }
-    if(score[nowIndex].fail<0){
-        console.log('you can\'t go under zero(fail)');
-        check=2;
-    }
     useEffect(()=>{
-        if(check===1)score[nowIndex].made=0;
-        if(check===2)score[nowIndex].fail=0;
-    });*/
-
+        console.log(time);
+        let spliced=[...score];
+        if(localStorage.length===0){
+            for(let i=0;i<11;i++){
+                localStorage.setItem(i,JSON.stringify(spliced[i]));
+            }
+        }
+        else{
+            if(time<=0){
+                for(let i=0;i<11;i++){
+                    localImsiScore[i]=JSON.parse(localStorage.getItem(i));
+                    //console.log(localImsiScore[i]);
+                }
+                spliced.splice(0,11,localImsiScore[0],localImsiScore[1],localImsiScore[2],localImsiScore[3],localImsiScore[4],localImsiScore[5],localImsiScore[6],localImsiScore[7],localImsiScore[8],localImsiScore[9],localImsiScore[10]);
+                changeScore(spliced);
+                console.log(spliced);
+            }
+            else{
+                for(let i=0;i<11;i++){
+                    localStorage.setItem(i,JSON.stringify(spliced[i]));
+                }
+            }
+        }
+        changeTime(time+1);
+        console.log(score);
+    },[score]);
+    
     const indexChange = (index) => {
         changeIndex(index);
-        console.log(score);
+        //console.log(score);
     }
 
     const scoreUp=function(type,index){
