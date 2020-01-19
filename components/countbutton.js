@@ -2,38 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Index = (props) => {
-    const {position, onMadePlus, onMadeMinus, onFailPlus, onFailMinus} = props;
-    const handleMadePlus = () => {
-        onMadePlus();
-        console.log(position)
+    const {position, onMadeChange, onFailChange} = props;
+    const handleMadeChange = (e) => {
+        let value = e.target.value
+        value = value.replace(/(^0+)/, "");
+        if(value=='') onMadeChange(0);
+        if('0'<=value[value.length-1]&&value[value.length-1]<='9') onMadeChange(value);
+        console.log(value);
     }
-    const handleMadeMinus = () => {
-        onMadeMinus();
-        console.log(position)
-    }
-    const handleFailPlus = () => {
-        onFailPlus();
-        console.log(position)
-    }
-    const handleFailMinus = () => {
-        onFailMinus();
-        console.log(position)
+    const handleFailChange = (e) => {
+        let value = e.target.value
+        value = value.replace(/(^0+)/, "");
+        if(value=='') onFailChange(0);
+        if('0'<=value[value.length-1]&&value[value.length-1]<='9') onFailChange(value);
+        console.log(value);
     }
     return (
         <ButtonContainer>
             <Box>
                 <Button>
-                    <button onClick={handleMadePlus}>+</button>
-                    <span>{position.made}</span>
-                    <button onClick={handleMadeMinus}>-</button>
+                    <button onClick={() => onMadeChange(position.made+1)}>+</button>
+                    <input value={position.made} onChange={(e) => {handleMadeChange(e)}}/>
+                    <button onClick={() => onMadeChange(position.made-1)}>-</button>
                 </Button>
                 <span>MADE</span>
             </Box>
             <Box>
                 <Button>
-                    <button onClick={handleFailPlus}>+</button>
-                    <span>{position.fail}</span>
-                    <button onClick={handleFailMinus}>-</button>
+                    <button onClick={() => onFailChange(position.fail+1)}>+</button>
+                    <input value={position.fail} onChange={(e) => {handleFailChange(e)}}/>
+                    <button onClick={() => onFailChange(position.fail-1)}>-</button>
                 </Button>
                 <span>FAIL</span>
             </Box>
@@ -63,8 +61,11 @@ const Button = styled.div`
         border: none;
         cursor: pointer;
     }
-    span {
+    input {
+        background-color: transparent;
+        border: none;
         width: 100%; height: 33%; text-align: center;
         margin-top: 7%;
+        font-size: 20pt;
     }
 `;

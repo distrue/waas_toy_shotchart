@@ -65,39 +65,26 @@ const Index = () => {
     const selectPosition = (index) => {
         setIndex(index);
     }
-    const onMadePlus = () => {
+    const onMadeChange = (changed) => {
         let newPositionList = positionList;
-        newPositionList[index].made = positionList[index].made+1;
+        if('0'<=changed) newPositionList[index].made = changed;
+        else return;
         if(newPositionList[index].fail) newPositionList[index].ratio = newPositionList[index].made/(newPositionList[index].made+newPositionList[index].fail);
         else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
-        else newPositionList[index].ratio = 1;
+        else newPositionList[index].ratio=1;
         setPositionList([...newPositionList]);
         //localStorage('positionList', newPositionList);
     }
-    const onMadeMinus = () => {
+    const onFailChange = (changed) => {
         let newPositionList = positionList;
-        if(positionList[index].made) newPositionList[index].made = positionList[index].made-1;
+        if('0'<=changed) newPositionList[index].fail = changed;
         else return;
         if(newPositionList[index].fail) newPositionList[index].ratio = newPositionList[index].made/(newPositionList[index].made+newPositionList[index].fail);
         else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
-        else newPositionList[index].ratio = 1;
+        else newPositionList[index].ratio=1;
         setPositionList([...newPositionList]);
     }
-    const onFailPlus = () => {
-        let newPositionList = positionList;
-        newPositionList[index].fail = positionList[index].fail+1;
-        newPositionList[index].ratio = newPositionList[index].made/(newPositionList[index].made+newPositionList[index].fail);
-        setPositionList([...newPositionList]);
-    }
-    const onFailMinus = () => {
-        let newPositionList = positionList;
-        if(positionList[index].fail)newPositionList[index].fail = positionList[index].fail-1;
-        else return;
-        if(newPositionList[index].fail) newPositionList[index].ratio = newPositionList[index].made/(newPositionList[index].made+newPositionList[index].fail);
-        else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
-        else newPositionList[index].ratio = 1;
-        setPositionList([...newPositionList]);
-    }
+
     return (
         <Background>
             <HeaderStyle>
@@ -105,7 +92,7 @@ const Index = () => {
             </HeaderStyle>
             <Court list={positionList} index={index} selectPosition={selectPosition}/>
             <Piechart positionList={positionList} index={index}/>
-            <CountButton position={positionList[index]} onMadePlus={onMadePlus} onMadeMinus={onMadeMinus} onFailPlus={onFailPlus} onFailMinus={onFailMinus}/>
+            <CountButton position={positionList[index]} onMadeChange={onMadeChange} onFailChange={onFailChange}/>
         </Background>
     )
 }
