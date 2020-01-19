@@ -18,7 +18,6 @@ const Index = (props) => {
   }
   const onClick = (index) => {
     selectPosition(index);
-    console.log(index);
   }
   const positionName = () => {
     switch(index){
@@ -52,12 +51,11 @@ const Index = (props) => {
       case 9:
         return '키';
         break;
-      case 9:
+      case 10:
         return '오른쪽 엘보';
         break;
     }
   }
-  //TODO fix index 8,9,10
   return (
     <Container>
       <Court>
@@ -105,7 +103,7 @@ const Court = styled.div`
 `;
 const Ball = styled.div`
     #ball0 {
-        position: absolute; left: 0px; top: 45px; z-index: 1;
+        position: absolute; left: 0px; top: 45px;
     }
     #ball1 {
         position: absolute; left: 70px; top: 45px;
@@ -129,13 +127,13 @@ const Ball = styled.div`
         position: absolute; right: 35px; top: 180px;
     }
     #ball8 {
-        position: absolute; left: 35%; top: 250px;
+        position: absolute; left: 80px; top: 150px;
     }
     #ball9 {
-        position: absolute; left: 48.3%; top: 300px;
+        position: absolute; left: 188px; top: 175px;
     }
     #ball10 {
-        position: absolute; left: 60%; top: 250px;
+        position: absolute; right: 80px; top: 150px;
     }
 `;
 const Lines = () => {
@@ -148,16 +146,22 @@ const Lines = () => {
       <path d="M0 120 H 135" stroke="black" style={{strokeDasharray:3, opacity:0.5}}></path>
       <path d="M135 160 H 265" stroke="black"></path>
       <path d="M265 120 H 400" stroke="black" style={{strokeDasharray:3, opacity:0.5}}></path>
-      
-      <path d="M25 120 C 75 280 320 280 375 120" stroke="black" fill="transparent"></path>
+
+      <path d="M175 30 H 225" stroke="black"></path>
+      <circle cx='200' cy='35' r='5' stroke="black" fill='none'/>
+      <path d="M165 40 C 165 90 235 90 235 40" stroke="black" fill="none"></path>
+      <path d="M165 32 V 40" stroke="black"></path>
+      <path d="M235 32 V 40" stroke="black"></path>
+
+      <path d="M25 120 C 75 280 320 280 375 120" stroke="black" fill="none"></path>
       <path d="M135 160 V 230" stroke="black" style={{strokeDasharray:3, opacity:0.5}}></path>
       <path d="M265 160 V 230" stroke="black" style={{strokeDasharray:3, opacity:0.5}}></path>
 
       <path d="M105 216 L 85 280" stroke="black" style={{strokeDasharray:3, opacity:0.5}}></path>
       <path d="M295 216 L 315 280" stroke="black" style={{strokeDasharray:3, opacity:0.5}}></path>
       
-      <path d="M150 160 A 50 50 0 0 0 250 160" stroke="black" fill="transparent"></path>
-      <path d="M150 160 A 50 50 0 0 1 250 160" stroke="black" fill="transparent" style={{strokeDasharray:10}}></path>
+      <path d="M150 160 A 50 50 0 0 0 250 160" stroke="black" fill="none"></path>
+      <path d="M150 160 A 50 50 0 0 1 250 160" stroke="black" fill="none" style={{strokeDasharray:10}}></path>
     </g>
   );
 }

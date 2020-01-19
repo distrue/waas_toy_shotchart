@@ -4,6 +4,7 @@ import { CountButton, Court, Piechart } from '../components';
 
 const Index = () => {
     const [index, setIndex] = useState(0);
+    //const [positionList, setPositionList] = useState(localStorage.getItem('positionList'));
     const [positionList, setPositionList] = useState([{
         name: 'LeftConner',
         made: 0,
@@ -59,7 +60,7 @@ const Index = () => {
         made: 0,
         fail: 0,
         ratio: 0
-    }])
+    }]);
     
     const selectPosition = (index) => {
         setIndex(index);
@@ -71,6 +72,7 @@ const Index = () => {
         else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
         else newPositionList[index].ratio = 1;
         setPositionList([...newPositionList]);
+        //localStorage('positionList', newPositionList);
     }
     const onMadeMinus = () => {
         let newPositionList = positionList;
