@@ -4,6 +4,7 @@ import { CountButton, Piechart, Court } from '../components';
 
 let localImsiScore=[{}];
 const Index = () => {
+    const position=['Left Corner','Right Corner','Left Short Corner','Right Short Corner','Paint Zone','Key','Left Elbow','Right Elbow','Left Wing','Right Wing','Top'];
     const [time,changeTime]=useState(0);
     const [nowIndex,changeIndex]=useState(0);
     const [score,changeScore]=useState([{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0},{made:0,fail:0}]);
@@ -71,7 +72,7 @@ const Index = () => {
             </HeaderStyle>
             <Court score={score} index={nowIndex} change={indexChange}/>
             <div className="position">
-                {nowIndex}
+                {position[nowIndex]}
             </div>
             <Piechart score={score} index={nowIndex}/>
             <CountButton score={score} index={nowIndex} up={scoreUp} down={scoreDown}/>
@@ -108,6 +109,7 @@ const HeaderStyle = styled.div`
 const Background = styled.div`
 .position{
     text-align:center;
+    font-size:30px;
 }
 `
 

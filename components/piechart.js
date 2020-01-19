@@ -88,7 +88,7 @@ const Index = (props) => {
         <circle r="100" cx="-130" cy="150" fill="transparent"
           className="pointshot"
           stroke={percToColour(nowPoint?point3Perc:point2Perc)}
-          strokeWidth="50"
+          strokeWidth="30"
           transform="rotate(-90) translate(-20)" />
           <text x="145" y="320">{nowPoint?'3점':'2점'}</text>
       </svg>
@@ -99,7 +99,7 @@ const Index = (props) => {
         <circle r="100" cx="-130" cy="150" fill="transparent"
           className="spotshot"
           stroke={percToColour(spotPerc)}
-          strokeWidth="50"
+          strokeWidth="30"
           transform="rotate(-90) translate(-20)" />
           <text x="145" y="320">현재위치</text>
       </svg>
@@ -110,7 +110,7 @@ const Index = (props) => {
         <circle r="100" cx="-130" cy="150" fill="transparent"
           className="allshot"
           stroke={percToColour(pointPerc)}
-          strokeWidth="50"
+          strokeWidth="30"
           transform="rotate(-90) translate(-20)" />
           <text x="145" y="320">전체</text>
       </svg>
