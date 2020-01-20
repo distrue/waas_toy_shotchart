@@ -15,7 +15,8 @@ const Layout = ({ Component }) => {
       </Head>
       <Component />
       <GlobalStyle />
-    </Container>);
+    </Container>
+  );
 }
 
 export default Layout;

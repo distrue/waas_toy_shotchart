@@ -1,16 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { CountButton, Piechart } from '../components';
+import { CountButton, Piechart, Court } from '../components';
 
 const Index = () => {
+    let two = 0.0, three = 0.0, tot = 0.0;
+    const [cnt, setcnt] = useState([ [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0] ]);
+    const [now, setnow] = useState(0);
+
+    useEffect( () => {
+        const tmp = localStorage.getItem('shot');
+        if(tmp !== "undefined") {
+            setcnt(JSON.parse(tmp));
+        }
+    }, []);
+
+    useEffect( () => {
+        console.log(cnt);
+        localStorage.setItem('shot', JSON.stringify(cnt));
+    }, [cnt]);
+
+    const percentupd = () => {
+        let twomade = 0, twofail = 0, threemade = 0, threefail = 0;
+        cnt.forEach( (val, idx) => {
+            if(idx < 6) twomade += val[0], twofail += val[1];
+            else threemade += val[0], threefail += val[1];
+        });
+        if(twomade !==0 || twofail !== 0)
+            two = twomade / (twomade + twofail);
+        else two = 0;
+        if(threemade !==0 || threemade !== 0)
+            three = threemade / (threemade + threefail);
+        else three = 0;
+        if(twomade !==0 || twofail !== 0 || threemade !== 0 || threefail !== 0)
+            tot = (twomade + threemade) / (twomade + twofail + threemade + threefail);
+        else tot = 0;
+    };
+    const courtclick = (where) => {
+        setnow(where);
+    };
+    const madebutton = (up) => {
+        setcnt(cnt.map( (val, idx) => {
+            if(idx === now) {
+                if(up) return [ val[0] + 1, val[1] ];
+                if(val[0] !== 0) return [ val[0] - 1, val[1] ];
+            }
+            return val;
+        }));
+        percentupd();
+    };
+    const failbutton = (up) => {
+        setcnt(cnt.map( (val, idx) => {
+            if(idx === now) {
+                if(up) return [ val[0], val[1] + 1 ];
+                if(val[1] !== 0 ) return [ val[0], val[1] - 1 ];
+            }
+            return val;
+        }));
+        percentupd();
+    };
+    const numberpad = (what, num) => { /* what=1-> made, else fail */
+        num = Number(num);
+        setcnt(cnt.map( (val, idx) => {
+            if(idx === now)
+                return what ? [num, val[1]] : [val[0], num] ;
+            return val;
+        }));
+        percentupd();
+    };
+
     return (
         <Background>
             <HeaderStyle>
                 <div className="text">My Shot Chart</div>
             </HeaderStyle>
+            <Court now = {now} cnt = {cnt} click = {courtclick}/>
+
+            <Piechart point = {now>5?3:2} score = {now>5 ? three : two}
+                spot = {(cnt[now][0] === 0 && cnt[now][1] === 0) ? 0 :
+                    (cnt[now][0] / ( cnt[now][0] + cnt[now][1] ))}
+                tot = {tot}/>
+            
+            <CountButton made = {cnt[now][0]} fail = {cnt[now][1]}
+                madeclick = {madebutton} failclick = {failbutton}
+                numpad = {numberpad}/>
         </Background>
-    )
-}
+    );
+};
 
 export default Index;
 
