@@ -3,116 +3,137 @@ import styled from 'styled-components';
 import { CountButton, Piechart, Court } from '../components';
 
 const Index = () => {
-    let two = 0.0, three = 0.0, tot = 0.0;
-    const [cnt, setcnt] = useState([ [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0] ]);
-    const [now, setnow] = useState(0);
+  const [two, setTwo] = useState(0.0);
+  const [three, setThree] = useState(0.0);
+  const [tot, setTot] = useState(0.0);
+  const [cnt, setcnt] = useState(new Array(11).fill([0, 0]));
+  const [now, setnow] = useState(0);
 
-    useEffect( () => {
-        const tmp = localStorage.getItem('shot');
-        if(tmp !== "undefined") {
-            setcnt(JSON.parse(tmp));
-        }
-    }, []);
+  const percentupd = () => {
+    let twomade = 0;
+    let twofail = 0;
+    let threemade = 0;
+    let threefail = 0;
 
-    useEffect( () => {
-        console.log(cnt);
-        localStorage.setItem('shot', JSON.stringify(cnt));
-    }, [cnt]);
+    cnt.forEach(([succ, fail], idx) => {
+      if (idx < 6) {
+        twomade += succ;
+        twofail += fail;
+      } else {
+        threemade += succ;
+        threefail += fail;
+      }
+    });
 
-    const percentupd = () => {
-        let twomade = 0, twofail = 0, threemade = 0, threefail = 0;
-        cnt.forEach( (val, idx) => {
-            if(idx < 6) twomade += val[0], twofail += val[1];
-            else threemade += val[0], threefail += val[1];
-        });
-        if(twomade !==0 || twofail !== 0)
-            two = twomade / (twomade + twofail);
-        else two = 0;
-        if(threemade !==0 || threemade !== 0)
-            three = threemade / (threemade + threefail);
-        else three = 0;
-        if(twomade !==0 || twofail !== 0 || threemade !== 0 || threefail !== 0)
-            tot = (twomade + threemade) / (twomade + twofail + threemade + threefail);
-        else tot = 0;
-    };
-    const courtclick = (where) => {
-        setnow(where);
-    };
-    const madebutton = (up) => {
-        setcnt(cnt.map( (val, idx) => {
-            if(idx === now) {
-                if(up) return [ val[0] + 1, val[1] ];
-                if(val[0] !== 0) return [ val[0] - 1, val[1] ];
-            }
-            return val;
-        }));
-        percentupd();
-    };
-    const failbutton = (up) => {
-        setcnt(cnt.map( (val, idx) => {
-            if(idx === now) {
-                if(up) return [ val[0], val[1] + 1 ];
-                if(val[1] !== 0 ) return [ val[0], val[1] - 1 ];
-            }
-            return val;
-        }));
-        percentupd();
-    };
-    const numberpad = (what, num) => { /* what=1-> made, else fail */
-        num = Number(num);
-        setcnt(cnt.map( (val, idx) => {
-            if(idx === now)
-                return what ? [num, val[1]] : [val[0], num] ;
-            return val;
-        }));
-        percentupd();
-    };
+    if (twomade + twofail > 0) {
+      setTwo(twomade / (twomade + twofail));
+    } else setTwo(0);
 
-    return (
-        <Background>
-            <HeaderStyle>
-                <div className="text">My Shot Chart</div>
-            </HeaderStyle>
-            <Court now = {now} cnt = {cnt} click = {courtclick}/>
+    if (threemade + threefail > 0) {
+      setThree(threemade / (threemade + threefail));
+    } else setThree(0);
 
-            <Piechart point = {now>5?3:2} score = {now>5 ? three : two}
-                spot = {(cnt[now][0] === 0 && cnt[now][1] === 0) ? 0 :
-                    (cnt[now][0] / ( cnt[now][0] + cnt[now][1] ))}
-                tot = {tot}/>
-            
-            <CountButton made = {cnt[now][0]} fail = {cnt[now][1]}
-                madeclick = {madebutton} failclick = {failbutton}
-                numpad = {numberpad}/>
-        </Background>
-    );
+    if (twomade + twofail + threemade + threefail > 0) {
+      setTot((twomade + threemade) / (twomade + twofail + threemade + threefail));
+    } else setTot(0);
+  };
+
+  const courtclick = (where) => {
+    setnow(where);
+  };
+
+  const madebutton = (up) => {
+    setcnt(cnt.map(([succ, fail], idx) => {
+      if (idx === now) {
+        if (up) return [succ + 1, fail];
+        if (succ > 0) return [succ - 1, fail];
+      }
+      return [succ, fail];
+    }));
+    percentupd();
+  };
+
+  const failbutton = (up) => {
+    setcnt(cnt.map(([succ, fail], idx) => {
+      if (idx === now) {
+        if (up) return [succ, fail + 1];
+        if (fail > 0) return [succ, fail - 1];
+      }
+      return [succ, fail];
+    }));
+    percentupd();
+  };
+
+  const numberpad = (what, num) => {
+    const Num = Number(num);
+    setcnt(cnt.map(([succ, fail], idx) => {
+      if (idx === now) return what ? [Num, fail] : [succ, Num];
+      return [succ, fail];
+    }));
+    percentupd();
+  };
+
+  useEffect(() => {
+    const tmp = localStorage.getItem('shot');
+    if (tmp !== 'undefined') {
+      setcnt(JSON.parse(tmp));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('shot', JSON.stringify(cnt));
+    percentupd();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cnt]);
+
+  return (
+    <div>
+      <HeaderStyle>
+        <div className="text">My Shot Chart</div>
+      </HeaderStyle>
+      <Court now={now} cnt={cnt} click={courtclick} />
+
+      <Piechart
+        point={now > 5 ? 3 : 2}
+        score={now > 5 ? three : two}
+        spot={(cnt[now][0] === 0 && cnt[now][1] === 0) ? 0
+          : (cnt[now][0] / (cnt[now][0] + cnt[now][1]))}
+        tot={tot}
+      />
+
+      <CountButton
+        made={cnt[now][0]}
+        fail={cnt[now][1]}
+        madeclick={madebutton}
+        failclick={failbutton}
+        numpad={numberpad}
+      />
+    </div>
+  );
 };
 
 export default Index;
 
 const HeaderStyle = styled.div`
-    position: relative;
-    top: 0px;
-    width: 100%;
-    height: 35px;
-    background-color: #ff5722;
-    opacity: 0.8;
-    z-index: 1;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
-    padding-top: 20px;
-    .text{
-        width: 100%;
-        font-size: 30px;
-        font-family: 'Bebas Neue', cursive;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 0.75;
-        letter-spacing: 1.5px;
-        text-align: center;
-        color: #ffffff;
-    }
-    
-`
-const Background = styled.div`
-`
-
+  position: relative;
+  top: 0px;
+  width: 100%;
+  height: 35px;
+  background-color: #ff5722;
+  opacity: 0.8;
+  z-index: 1;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
+  padding-top: 20px;
+  .text{
+      width: 100%;
+      font-size: 30px;
+      font-family: 'Bebas Neue', cursive;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 0.75;
+      letter-spacing: 1.5px;
+      text-align: center;
+      color: #ffffff;
+  }
+`;

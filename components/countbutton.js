@@ -1,35 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const Index = (props) => {
-    return (
-        <ButtonContainer>
-            <div className = "big">
-                <div className = "button">
-                    <div className = "plma"
-                        onClick = {()=>props.madeclick(true)}>+</div>
-                    <input type = "number" value = {props.made} 
-                        onChange = {e=>props.numpad(true, e.target.value)}/>
-                    <div className = "plma"
-                        onClick = {()=>props.madeclick(false)}>-</div>
-                </div>
-                <div className = "title">MADE</div>
-            </div>
-            <div className = "big">
-                <div className = "button">
-                    <div className = "plma"
-                        onClick = {()=>props.failclick(1)}>+</div>
-                        <input type = "number" value = {props.fail} 
-                            onChange = {e=>props.numpad(false, e.target.value)}/>
-                    <div className = "plma"
-                        onClick = {()=>props.failclick(0)}>-</div>
-                </div>
-                <div className = "title">FAIL</div>
-            </div>
-        </ButtonContainer>
-    );
-    
-}
+const Index = ({ made, madeclick, numpad, failclick, fail }) => (
+  <ButtonContainer>
+    <div className="big">
+      <div className="button">
+        <div className="plma" onClick={() => madeclick(true)}>+</div>
+        <input type="number" value={made} onChange={(e) => numpad(true, e.target.value)} />
+        <div className="plma" onClick={() => madeclick(false)}>-</div>
+      </div>
+      <div className="title">MADE</div>
+    </div>
+    <div className="big">
+      <div className="button">
+        <div
+          className="plma"
+          onClick={() => failclick(1)}
+        >+
+        </div>
+        <input
+          type="number"
+          value={fail}
+          onChange={(e) => numpad(false, e.target.value)}
+        />
+        <div
+          className="plma"
+          onClick={() => failclick(0)}
+        >-
+        </div>
+      </div>
+      <div className="title">FAIL</div>
+    </div>
+  </ButtonContainer>
+);
 export default Index;
 
 const ButtonContainer = styled.div`
@@ -46,7 +49,6 @@ const ButtonContainer = styled.div`
         font-size: 30px;
     }
     .plma {
-        /* height: 40px; */
         text-align: center;
         font-size: 35px;
         cursor: pointer;
