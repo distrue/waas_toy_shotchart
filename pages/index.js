@@ -9,17 +9,13 @@ const Index = () => {
 
     useEffect( () => {
         const tmp = localStorage.getItem('shot');
-        if(tmp !== "undefined") {
+        if(tmp && tmp !== "undefined") {
             setcnt(JSON.parse(tmp));
         }
     }, []);
 
     useEffect( () => {
-        console.log(cnt);
         localStorage.setItem('shot', JSON.stringify(cnt));
-    }, [cnt]);
-
-    const percentupd = () => {
         let twomade = 0, twofail = 0, threemade = 0, threefail = 0;
         cnt.forEach( (val, idx) => {
             if(idx < 6) twomade += val[0], twofail += val[1];
@@ -34,7 +30,9 @@ const Index = () => {
         if(twomade !==0 || twofail !== 0 || threemade !== 0 || threefail !== 0)
             tot = (twomade + threemade) / (twomade + twofail + threemade + threefail);
         else tot = 0;
-    };
+        console.log(two,three,tot);
+    }, [cnt]);
+
     const courtclick = (where) => {
         setnow(where);
     };
@@ -46,7 +44,6 @@ const Index = () => {
             }
             return val;
         }));
-        percentupd();
     };
     const failbutton = (up) => {
         setcnt(cnt.map( (val, idx) => {
@@ -56,7 +53,6 @@ const Index = () => {
             }
             return val;
         }));
-        percentupd();
     };
     const numberpad = (what, num) => { /* what=1-> made, else fail */
         num = Number(num);
@@ -65,7 +61,6 @@ const Index = () => {
                 return what ? [num, val[1]] : [val[0], num] ;
             return val;
         }));
-        percentupd();
     };
 
     return (
