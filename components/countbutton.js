@@ -2,42 +2,42 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Index = (props) => {
-    const {position, onMadeChange, onFailChange} = props;
-    const handleMadeChange = (e) => {
-        let value = e.target.value
-        value = value.replace(/(^0+)/, "");
-        if(value=='') onMadeChange(0);
-        if('0'<=value[value.length-1]&&value[value.length-1]<='9') onMadeChange(value);
-        console.log(value);
-    }
-    const handleFailChange = (e) => {
-        let value = e.target.value
-        value = value.replace(/(^0+)/, "");
-        if(value=='') onFailChange(0);
-        if('0'<=value[value.length-1]&&value[value.length-1]<='9') onFailChange(value);
-        console.log(value);
-    }
-    return (
-        <ButtonContainer>
-            <Box>
-                <Button>
-                    <button onClick={() => onMadeChange(position.made+1)}>+</button>
-                    <input value={position.made} onChange={(e) => {handleMadeChange(e)}}/>
-                    <button onClick={() => onMadeChange(position.made-1)}>-</button>
-                </Button>
-                <span>MADE</span>
-            </Box>
-            <Box>
-                <Button>
-                    <button onClick={() => onFailChange(position.fail+1)}>+</button>
-                    <input value={position.fail} onChange={(e) => {handleFailChange(e)}}/>
-                    <button onClick={() => onFailChange(position.fail-1)}>-</button>
-                </Button>
-                <span>FAIL</span>
-            </Box>
-        </ButtonContainer>
-    )
-}
+  const { position, onMadeChange, onFailChange } = props;
+  const handleMadeChange = (e) => {
+    let { value } = e.target;
+    value = value.replace(/(^0+)/, '');
+    if (value == '') onMadeChange(0);
+    if (value[value.length - 1] >= '0' && value[value.length - 1] <= '9') onMadeChange(value);
+    console.log(value);
+  };
+  const handleFailChange = (e) => {
+    let { value } = e.target;
+    value = value.replace(/(^0+)/, '');
+    if (value == '') onFailChange(0);
+    if (value[value.length - 1] >= '0' && value[value.length - 1] <= '9') onFailChange(value);
+    console.log(value);
+  };
+  return (
+    <ButtonContainer>
+      <Box>
+        <Button>
+          <button onClick={() => onMadeChange(position.made + 1)}>+</button>
+          <input value={position.made} onChange={(e) => { handleMadeChange(e); }} />
+          <button onClick={() => onMadeChange(position.made - 1)}>-</button>
+        </Button>
+        <span>MADE</span>
+      </Box>
+      <Box>
+        <Button>
+          <button onClick={() => onFailChange(position.fail + 1)}>+</button>
+          <input value={position.fail} onChange={(e) => { handleFailChange(e); }} />
+          <button onClick={() => onFailChange(position.fail - 1)}>-</button>
+        </Button>
+        <span>FAIL</span>
+      </Box>
+    </ButtonContainer>
+  );
+};
 export default Index;
 
 const ButtonContainer = styled.div`

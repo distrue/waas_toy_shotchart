@@ -2,80 +2,82 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Index = (props) => {
-  const {positionList, index} = props;
+  const { positionList, index } = props;
   const score = () => {
-    if(index==0) return 3;
-    else if(4<=index&&index<=7) return 3;
-    else return 2;
-  }
-  const spotRatio = positionList[index].ratio
+    if (index == 0) return 3;
+    if (index >= 4 && index <= 7) return 3;
+    return 2;
+  };
+  const spotRatio = positionList[index].ratio;
   const allRatio = () => {
     let made = 0;
     let fail = 0;
-    for(let i=0; i<11; i++) made += positionList[i].made;
-    for(let i=0; i<11; i++) fail += positionList[i].fail;
-    if(fail) return made/(made+fail);
-    else if(made) return 1;
-    else return 0;
-  }
+    for (let i = 0; i < 11; i++) made += positionList[i].made;
+    for (let i = 0; i < 11; i++) fail += positionList[i].fail;
+    if (fail) return made / (made + fail);
+    if (made) return 1;
+    return 0;
+  };
   const scoreRatio = () => {
     let made = 0;
     let fail = 0;
-    if(score()==3) {
-      for(let i=0; i<=7; i++){
-        if(i==1||i==2||i==3) continue;
+    if (score() == 3) {
+      for (let i = 0; i <= 7; i++) {
+        if (i == 1 || i == 2 || i == 3) continue;
         made += positionList[i].made;
         fail += positionList[i].fail;
       }
     } else {
-      for(let i=1; i<=10; i++){
-        if(i==4||i==5||i==6||i==7) continue;
+      for (let i = 1; i <= 10; i++) {
+        if (i == 4 || i == 5 || i == 6 || i == 7) continue;
         made += positionList[i].made;
         fail += positionList[i].fail;
       }
     }
-    if(fail) return made/(made+fail);
-    else if(made) return 1;
-    else return 0;
-  }
+    if (fail) return made / (made + fail);
+    if (made) return 1;
+    return 0;
+  };
   const degree = (ratio, xflag) => {
-    if(xflag) return Math.cos(Math.PI*(360*ratio-91)/180)*40 + 50;
-    else return Math.sin(Math.PI*(360*ratio-91)/180)*40 + 50;
-  }
+    if (xflag) return Math.cos(Math.PI * (360 * ratio - 91) / 180) * 40 + 50;
+    return Math.sin(Math.PI * (360 * ratio - 91) / 180) * 40 + 50;
+  };
   const largeCircleFlag = (ratio) => {
-    if(ratio>0.5) return 1;
-    else return 0;
-  }
+    if (ratio > 0.5) return 1;
+    return 0;
+  };
   const drawCircle = (ratio) => {
     let red = 0;
     let green = 0;
-    if(ratio>=0.5){
+    if (ratio >= 0.5) {
       green = 255;
-      red = 510*(1-ratio);
+      red = 510 * (1 - ratio);
     } else {
       red = 255;
-      green = 510*ratio;
+      green = 510 * ratio;
     }
-    //TODO gradient
-    return(
+    // TODO gradient
+    return (
       <svg>
-        <path 
+        <path
           d={
-            `M50 10 A 40 40 0 ${largeCircleFlag(ratio)} 1 ${degree(ratio, 1)} ${degree(ratio, 0)}`}
+            `M50 10 A 40 40 0 ${largeCircleFlag(ratio)} 1 ${degree(ratio, 1)} ${degree(ratio, 0)}`
+          }
           stroke={`rgba(${red},${green},0,1)`}
-          fill='transparent'
-          strokeWidth='10px'
+          fill="transparent"
+          strokeWidth="10px"
         />
-        <path 
+        <path
           d={
-            `M${degree(ratio, 1)} ${degree(ratio, 0)} A 40 40 0 0 1 ${degree(ratio+0.01, 1)} ${degree(ratio+0.01, 0)}`}
+            `M${degree(ratio, 1)} ${degree(ratio, 0)} A 40 40 0 0 1 ${degree(ratio + 0.01, 1)} ${degree(ratio + 0.01, 0)}`
+          }
           stroke={`rgba(${red},${green},0,1)`}
-          fill='transparent'
-          strokeWidth='10px'
+          fill="transparent"
+          strokeWidth="10px"
         />
       </svg>
     );
-  }
+  };
   return (
     <PieChart>
       <Box>
@@ -101,7 +103,7 @@ const Index = (props) => {
       </Box>
     </PieChart>
   );
-}
+};
 export default Index;
 
 const PieChart = styled.div`
