@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Index = (props) => {
-  const {list, index, selectPosition} = props;
-  const [positionList, setPositionList] = useState(list);
+  const {positionList, index, selectPosition} = props;
   const makeColor = (i) => {
     let red = 0;
     let green = 0;

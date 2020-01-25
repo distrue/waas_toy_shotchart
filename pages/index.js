@@ -1,37 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CountButton, Court, Piechart } from '../components';
+import axios from 'axios'
+const DB_URL = 'http://localhost:3000/score'
 
 const Index = () => {
     const [index, setIndex] = useState(0);
     const [positionList, setPositionList] = useState(initList);
+    
     useEffect(() => {
-        const localList = JSON.parse(localStorage.getItem('positionList'));
-        if(localList!==null) setPositionList([...localList]);
+        for(let i=0; i<11; i++){
+            let list = initList;
+            axios.get(`${DB_URL}/${i}`)
+            .then((res) => {
+                console.log(i,': ',res.data.score);
+                list[i].made=res.data.score[0];
+                list[i].fail=res.data.score[1];
+                setRatio(list[i]);
+                setPositionList([...list])
+            })
+            .catch((err) => {
+                if(err.response.data.reason==='Not Found'){
+                    axios.put(`${DB_URL}/${i}`,{
+                        made: 0,
+                        fail: 0
+                    })
+                    .then((res) => {
+                        list[i].made=0;
+                        list[i].fail=0;
+                        setRatio(list[i]);
+                        setPositionList([...list])
+                    })
+                }
+            })
+        }
     },[]);
-    useEffect(() => {
-        localStorage.setItem('positionList', JSON.stringify(positionList));
-    });
+    const setRatio = (pos) => {
+        const made = pos.made;
+        const fail = pos.fail;
+        if(fail) pos.ratio = made/(made+fail);
+        else if(made==0) pos.ratio = 0;
+        else pos.ratio = 1;
+    }
     const selectPosition = (index) => {
         setIndex(index);
     }
-    const onMadeChange = (changed) => {
+    const onMadeChange = async (changed) => {
         let newPositionList = positionList;
         if('0'<=changed) newPositionList[index].made = changed;
         else return;
-        if(newPositionList[index].fail) newPositionList[index].ratio = newPositionList[index].made/(newPositionList[index].made+newPositionList[index].fail);
-        else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
-        else newPositionList[index].ratio=1;
-        setPositionList([...newPositionList]);
+        await setRatio(newPositionList[index]);
+        await setPositionList([...newPositionList]);
+        await axios.put(`${DB_URL}/${index}`,{
+            made: newPositionList[index].made,
+            fail: newPositionList[index].fail
+        })
     }
     const onFailChange = (changed) => {
         let newPositionList = positionList;
         if('0'<=changed) newPositionList[index].fail = changed;
         else return;
-        if(newPositionList[index].fail) newPositionList[index].ratio = newPositionList[index].made/(newPositionList[index].made+newPositionList[index].fail);
-        else if(newPositionList[index].made==0) newPositionList[index].ratio=0;
-        else newPositionList[index].ratio=1;
+        setRatio(newPositionList[index]);
         setPositionList([...newPositionList]);
+        axios.put(`${DB_URL}/${index}`,{
+            made: newPositionList[index].made,
+            fail: newPositionList[index].fail
+        })
     }
 
     return (
@@ -39,7 +73,7 @@ const Index = () => {
             <HeaderStyle>
                 <div className="text">My Shot Chart</div>
             </HeaderStyle>
-            <Court list={positionList} index={index} selectPosition={selectPosition}/>
+            <Court positionList={positionList} index={index} selectPosition={selectPosition}/>
             <Piechart positionList={positionList} index={index}/>
             <CountButton position={positionList[index]} onMadeChange={onMadeChange} onFailChange={onFailChange}/>
         </Background>
