@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CountButton, Piechart, Court } from '../components';
+import Axios from 'axios';
 
 const Index = () => {
   const [two, setTwo] = useState(0.0);
@@ -36,6 +37,12 @@ const Index = () => {
     if (twomade + twofail + threemade + threefail > 0) {
       setTot((twomade + threemade) / (twomade + twofail + threemade + threefail));
     } else setTot(0);
+
+    // update된 결과를 backend에 입력해야 함
+    Axios.put(`${backUrl}/api/score`, {made: 1, area: 3})
+      .then(ans => {
+        console.dir(ans);
+      });
   };
 
   const courtclick = (where) => {
@@ -75,6 +82,15 @@ const Index = () => {
 
   useEffect(() => {
     const tmp = localStorage.getItem('shot');
+    // localStorage 부분을 제거하고, backend server에서 요청을 받아올 계획입니다.
+    for(idx of [...Array(10).keys()]) {
+      Axios.get(`${backUrl}/api/score?area=${0}`)
+        .then(ans => {
+          console.dir(ans); // ans에 어떤 response가 오는지 반드시 확인해 보세요
+          // cnt에 저장할 것
+        });
+      // useEffect 함수는 await이 금지입니다, 우회하여 함수를 작성하는 방법도 있으나, 지금과 같은 간단한 logic에는 필요해 보이지 않아 Promise-then으로 구현합니다.
+    }
     if (tmp !== 'undefined') {
       setcnt(JSON.parse(tmp));
     }
