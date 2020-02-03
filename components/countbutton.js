@@ -35,50 +35,6 @@ const Index = ({ made, madeclick, numpad, failclick, fail }) => (
 );
 export default Index;
 
-const Button=styled.div`
-    position: relative;
-    width: 100px;
-    height: 100%;
-    cursor: pointer;
-    margin: 20px calc(25% - 50px);
-    border-radius: 20px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-    border-image: initial;
-    text-align:center;
-    font-size : 30px;
-    .plusButton{
-        position: absolute;
-        top: 0px;
-        width: 100%;
-        height: 35%;
-    }
-    .minusButton{
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        height: 35%;
-    }
-    .text{
-        position: absolute;
-        top: 35%;
-        width: 100%;
-        height: 30%;
-        text-align: center;
-        font-size: 30px;
-        cursor: text;
-    }
-`
-const Title=styled.div`
-    font-size:18px;
-    position: relative;
-    top: 100%;
-    width: 100%;
-    text-align: center;
-    letter-spacing: 3px;
-    text-indent: 2.5px;
-`
 const ButtonContainer = styled.div`
     display: flex;
     input::-webkit-inner-spin-button {

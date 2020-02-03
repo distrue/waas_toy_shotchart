@@ -68,14 +68,6 @@ const Index = ({ now, click, cnt }) => {
 };
 export default Index;
 
-const Spot=styled.div`
-  position: relative;
-  top:-5%;
-  width: 100%;
-  text-align: center;
-  display: block;
-  font-size: 20px;
-`
 const Court = styled.div`
   .canvas {
     margin-top: 10px;
