@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CountButton, Court, Piechart } from '../components';
 import axios from 'axios'
-const DB_URL = 'http://localhost:3000/score'
+const DB_URL = 'http://localhost:4000/score'
 
 const Index = () => {
     const [index, setIndex] = useState(0);
