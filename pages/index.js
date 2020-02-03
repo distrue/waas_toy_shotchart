@@ -41,9 +41,12 @@ const Index = () => {
     } else setTot(0);
 
     for(idx of [...Array(11).keys()]) {
-      Axios.put(`${backUrl}/score?area=${idx}`,cnt[idx])
+      Axios.put(`${backUrl}/score/${idx}`,{
+        made: cnt[idx][0],
+        fail: cnt[idx][1]
+      })
         .then(ans => {
-          console.dir(ans); 
+          console.log(ans); 
 
         });
     }
@@ -89,29 +92,32 @@ const Index = () => {
       for(idx=0;idx<11;idx++)
       {
         let newCnt=cnt;
-        Axios.get(`${backUrl}/score?area=${idx}`)
+        Axios.get(`${backUrl}/score/${idx}`)
           .then(ans=>{
-            console.dir(ans);
+            console.log(ans);
             newCnt[idx][0]=ans.data.score[0];
             newCnt[idx][1]=ans.data.score[1];
             setcnt([...newCnt]);
         })
+          .catch((err)=>{
+              Axios.put(`${backUrl}/score/${idx}`,{
+                made: 0,
+                fail: 0
+              })
+              .then((res)=>{
+                newCnt[idx][0]=0;
+                newCnt[idx][1]=0;
+                setCnt([...newCnt]);
+              })
+            
+          })
       }
-
-    // for(idx of [...Array(11).keys()]) {
-    //   Axios.get(`${backUrl}/score?area=${idx}`)
-    //     .then(ans => {
-    //       console.dir(ans); // ans에 어떤 response가 오는지 반드시 확인해 보세요
-    //       cnt[i]=ans;// cnt에 저장할 것
-    //     });
-    // }
     percentupd();
   }, []);
 
   useEffect(() => {
     (cnt.map(([succ, fail], idx) => {
-      Axios.put(`${backUrl}/score?area=${idx}`,{
-        area: now,
+      Axios.put(`${backUrl}/score/${idx}`,{
         made: cnt[idx][0],
         fail: cnt[idx][1]
       })
@@ -168,7 +174,7 @@ const HeaderStyle = styled.div`
       font-style: normal;
       line-height: 0.75;
       letter-spacing: 1.5px;
-      text-align: center;
-      color: #ffffff;
+        text-align: center;
+        color: #ffffff;
   }
 `;
