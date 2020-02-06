@@ -3,7 +3,6 @@ import { Container } from 'next/app';
 import Head from 'next/head';
 import { createGlobalStyle } from 'styled-components';
 
-
 const Layout = ({ Component }) => (
   <Container>
     <Head>
@@ -16,7 +15,6 @@ const Layout = ({ Component }) => (
     <GlobalStyle />
   </Container>
 );
-
 export default Layout;
 
 const GlobalStyle = createGlobalStyle`

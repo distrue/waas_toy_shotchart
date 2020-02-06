@@ -3,19 +3,21 @@ import styled from 'styled-components';
 import { CountButton, Piechart, Court } from '../components';
 import Axios from 'axios';
 
+
 const Index = () => {
   const [two, setTwo] = useState(0.0);
   const [three, setThree] = useState(0.0);
   const [tot, setTot] = useState(0.0);
   const [cnt, setcnt] = useState(new Array(11).fill([0, 0]));
   const [now, setnow] = useState(0);
+  const backUrl='http://localhost:4000';
 
   const percentupd = () => {
     let twomade = 0;
     let twofail = 0;
     let threemade = 0;
     let threefail = 0;
-
+    let idx;
     cnt.forEach(([succ, fail], idx) => {
       if (idx < 6) {
         twomade += succ;
@@ -37,12 +39,18 @@ const Index = () => {
     if (twomade + twofail + threemade + threefail > 0) {
       setTot((twomade + threemade) / (twomade + twofail + threemade + threefail));
     } else setTot(0);
+/*
+    for(idx=0;idx<11;idx++) {
+      Axios.put(`${backUrl}/score/${idx}`,{
+        made: cnt[idx][0],
+        fail: cnt[idx][1]
+      })
+        .then(ans => {
+          console.log(ans); 
 
-    // update된 결과를 backend에 입력해야 함
-    Axios.put(`${backUrl}/api/score`, {made: 1, area: 3})
-      .then(ans => {
-        console.dir(ans);
-      });
+        });
+    }
+    */
   };
 
   const courtclick = (where) => {
@@ -81,27 +89,50 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const tmp = localStorage.getItem('shot');
-    // localStorage 부분을 제거하고, backend server에서 요청을 받아올 계획입니다.
-    for(idx of [...Array(10).keys()]) {
-      Axios.get(`${backUrl}/api/score?area=${0}`)
-        .then(ans => {
-          console.dir(ans); // ans에 어떤 response가 오는지 반드시 확인해 보세요
-          // cnt에 저장할 것
-        });
-      // useEffect 함수는 await이 금지입니다, 우회하여 함수를 작성하는 방법도 있으나, 지금과 같은 간단한 logic에는 필요해 보이지 않아 Promise-then으로 구현합니다.
-    }
-    if (tmp !== 'undefined') {
-      setcnt(JSON.parse(tmp));
-    }
-  }, []);
+    /*
+    setcnt(cnt.map(([succ, fail], idx) => {
+      let suc,fai;
+      Axios.get(`${backUrl}/score/${idx}`)
+        .then(ans=>{
+          console.log(ans);
+          suc=Number(ans.data.score[0]);
+          fai=Number(ans.data.score[1]);
+          console.log(succ+' '+fail);
+          //return ans.data.score;  
+      })
+      return [suc,fai];
+    }));
+    */
+   for(let idx=0;idx<11;idx++)
+   {
+      Axios.get(`${backUrl}/score/${idx}`)
+        .then(ans=>{
+          let newCnt=cnt;
+          newCnt[idx]=ans.data.score;
+          setcnt([...newCnt]);
+        })
+   }
+    
+    console.log(cnt)
+    percentupd();
+
+    },[]);
+
 
   useEffect(() => {
-    localStorage.setItem('shot', JSON.stringify(cnt));
+    (cnt.map(([succ, fail], idx) => {
+      Axios.put(`${backUrl}/score/${idx}`,{
+        made: succ,
+        fail: fail
+      })
+        .then(ans=>{
+          console.log(ans);
+        })
+    }));
     percentupd();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cnt]);
-
+  },[cnt]);
+  
+  
   return (
     <div>
       <HeaderStyle>
@@ -112,8 +143,7 @@ const Index = () => {
       <Piechart
         point={now > 5 ? 3 : 2}
         score={now > 5 ? three : two}
-        spot={(cnt[now][0] === 0 && cnt[now][1] === 0) ? 0
-          : (cnt[now][0] / (cnt[now][0] + cnt[now][1]))}
+        spot={(cnt[now][0] === 0 && cnt[now][1] === 0) ? 0 : (cnt[now][0] / (cnt[now][0] + cnt[now][1]))}
         tot={tot}
       />
 
@@ -149,7 +179,7 @@ const HeaderStyle = styled.div`
       font-style: normal;
       line-height: 0.75;
       letter-spacing: 1.5px;
-      text-align: center;
-      color: #ffffff;
+        text-align: center;
+        color: #ffffff;
   }
 `;

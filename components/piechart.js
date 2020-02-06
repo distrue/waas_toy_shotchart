@@ -29,6 +29,7 @@ const Index = ({ score, point, spot, tot }) => (
 
 export default Index;
 
+
 const PieChart = styled.div`
   display: flex;
   margin-top: 10px;
