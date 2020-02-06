@@ -39,8 +39,8 @@ const Index = () => {
     if (twomade + twofail + threemade + threefail > 0) {
       setTot((twomade + threemade) / (twomade + twofail + threemade + threefail));
     } else setTot(0);
-
-    for(idx of [...Array(11).keys()]) {
+/*
+    for(idx=0;idx<11;idx++) {
       Axios.put(`${backUrl}/score/${idx}`,{
         made: cnt[idx][0],
         fail: cnt[idx][1]
@@ -50,6 +50,7 @@ const Index = () => {
 
         });
     }
+    */
   };
 
   const courtclick = (where) => {
@@ -88,46 +89,50 @@ const Index = () => {
   };
 
   useEffect(() => {
-      let idx;
-      for(idx=0;idx<11;idx++)
-      {
-        let newCnt=cnt;
-        Axios.get(`${backUrl}/score/${idx}`)
-          .then(ans=>{
-            console.log(ans);
-            newCnt[idx][0]=ans.data.score[0];
-            newCnt[idx][1]=ans.data.score[1];
-            setcnt([...newCnt]);
+    /*
+    setcnt(cnt.map(([succ, fail], idx) => {
+      let suc,fai;
+      Axios.get(`${backUrl}/score/${idx}`)
+        .then(ans=>{
+          console.log(ans);
+          suc=Number(ans.data.score[0]);
+          fai=Number(ans.data.score[1]);
+          console.log(succ+' '+fail);
+          //return ans.data.score;  
+      })
+      return [suc,fai];
+    }));
+    */
+   for(let idx=0;idx<11;idx++)
+   {
+      Axios.get(`${backUrl}/score/${idx}`)
+        .then(ans=>{
+          let newCnt=cnt;
+          newCnt[idx]=ans.data.score;
+          setcnt([...newCnt]);
         })
-          .catch((err)=>{
-              Axios.put(`${backUrl}/score/${idx}`,{
-                made: 0,
-                fail: 0
-              })
-              .then((res)=>{
-                newCnt[idx][0]=0;
-                newCnt[idx][1]=0;
-                setCnt([...newCnt]);
-              })
-            
-          })
-      }
+   }
+    
+    console.log(cnt)
     percentupd();
-  }, []);
+
+    },[]);
+
 
   useEffect(() => {
     (cnt.map(([succ, fail], idx) => {
       Axios.put(`${backUrl}/score/${idx}`,{
-        made: cnt[idx][0],
-        fail: cnt[idx][1]
+        made: succ,
+        fail: fail
       })
         .then(ans=>{
-          console.dir(ans);
+          console.log(ans);
         })
     }));
     percentupd();
-    
-  }, [cnt]);
+  },[cnt]);
+  
+  
   return (
     <div>
       <HeaderStyle>
